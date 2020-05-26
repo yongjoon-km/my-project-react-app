@@ -1,0 +1,13 @@
+
+
+
+.container {
+	text-align: center;
+	font-size: 24px; 
+	border: 1px;
+	border-style: solid;
+	border-radius: 10px;
+	background-color: khaki;
+	padding: 10px;
+	margin: 10px;
+}

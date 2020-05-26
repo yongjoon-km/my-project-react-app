@@ -1,16 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import AddWorkDone from './AddWorkDone'
+import AddJobComponent from './AddJobComponent'
+import JobListComponent from './JobListComponent/'
 import Header from './Header'
-import CalendarGraph from './CalendarGraph'
 
 const App = () => {
+
+  const [jobs, setJobs] = useState(['PS', 'OS', 'Machine Learning']);
+
+  function pressHandler(newJob) {
+    console.log(newJob);
+    const newJobs = [...jobs, newJob];
+    console.log(newJobs);
+    setJobs(newJobs);
+  }
+
   return (
     <>
       <Header />
-      <AddWorkDone />
-      <CalendarGraph />
+      <AddJobComponent pressHandler={pressHandler}/>
+      <JobListComponent jobs={jobs}/>
     </>
   );
 }
