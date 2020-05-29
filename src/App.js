@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import AddJobComponent from './AddJobComponent'
@@ -8,6 +8,11 @@ import Header from './Header'
 const App = () => {
 
   const [jobs, setJobs] = useState(['PS', 'OS', 'Machine Learning']);
+
+  useEffect(() => {
+    fetch('/api/jobs')
+      .then(response => console.log(response));
+  }, []);
 
   function pressHandler(newJob) {
     console.log(newJob);
