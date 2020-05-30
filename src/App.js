@@ -7,18 +7,24 @@ import Header from './Header'
 
 const App = () => {
 
-  const [jobs, setJobs] = useState(['PS', 'OS', 'Machine Learning']);
+  const [jobs, setJobs] = useState();
 
   useEffect(() => {
-    fetch('/api/jobs')
-      .then(response => console.log(response));
+    load_data();
   }, []);
 
-  function pressHandler(newJob) {
-    console.log(newJob);
-    const newJobs = [...jobs, newJob];
-    console.log(newJobs);
+  async function load_data() {
+    const response = await fetch('http://localhost:5000/api/jobs');
+    const data = await response.json();
+    const newJobs = data.map((item) => item['job_name']);
     setJobs(newJobs);
+  }
+
+  async function pressHandler(newJob) {  
+    await fetch(`http://localhost:5000/api/jobs?job=${newJob}`, {
+      method: 'POST',
+    });
+    await load_data();
   }
 
   return (
