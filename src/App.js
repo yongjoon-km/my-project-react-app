@@ -21,10 +21,22 @@ const App = () => {
   }
 
   async function pressHandler(newJob) {  
-    await fetch(`http://localhost:5000/api/jobs?job=${newJob}`, {
+    const data = {
+      job_name : newJob
+    };
+    const res = await fetch(`http://localhost:5000/api/jobs`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
     });
-    await load_data();
+    if (!res.ok) {
+      // TODO: add pop-up message
+      console.log(await res.json());
+    } else {
+      await load_data();
+    }
   }
 
   return (
