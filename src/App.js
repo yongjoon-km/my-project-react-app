@@ -31,6 +31,7 @@ const App = () => {
       },
       body: JSON.stringify(data)
     });
+    
     if (!res.ok) {
       // TODO: add pop-up message
       console.log(await res.json());

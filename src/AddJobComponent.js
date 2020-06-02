@@ -11,6 +11,7 @@ const container = {
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
+	paddingTop: '50px',
 }
 
 

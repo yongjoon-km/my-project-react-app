@@ -1,17 +1,12 @@
 import React from 'react';
 import JobComponent from './JobComponent/'
-
-const container = {
-	display: 'flex',
-	justifyContent: 'center',
-	padding: 10,
-}
+import './JobListComponent.css'
 
 const JobListComponent = ({jobs}) => {
 
 	return (
 		<>
-			<div style={container}>
+			<div className='jobs-container'>
 			{ jobs && 
 				jobs.map((val) => <JobComponent title={val} />)
 			}
