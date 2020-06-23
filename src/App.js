@@ -6,48 +6,38 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Login from './Components/Login';
 import Register from './Components/Register';
 import Nav from 'react-bootstrap/Nav';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
 
   return (
     <Router>
-      <Nav
-        activeKey="/"
-        // onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}
-      >
-        <Nav.Item>
-          <Nav.Link>
-            <Link to="/">Home</Link>
-          </Nav.Link>
-        </Nav.Item>
 
-        <Nav.Item>
-          <Nav.Link>
-            <Link to="/login">Login</Link>
-          </Nav.Link>
-        </Nav.Item>
+      <nav className="navbar" activeKey="/">
+        <div>
+          <Link className="navbar__item" to="/">Home</Link>
+        </div>
+        <div className="navbar__container">
+          <Link className="navbar__item" to="/login">Login</Link>
+          <Link className="navbar__item" to="/register">Register</Link>
+        </div>
+      </nav>
 
-        <Nav.Item>
-          <Nav.Link>
-            <Link to="/register">Register</Link>
-          </Nav.Link>
-        </Nav.Item>
-      </Nav>
+      <div className='container'>
+        <Switch>
+          <Route path="/" exact>
+            <div>This is my Home Page</div>
+          </Route>
 
-      <Switch>
-        <Route path="/" exact>
-          <div>home page</div>
-        </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
 
-        <Route path="/login">
-          <Login />
-        </Route>
+          <Route path="/register">
+            <Register />
+          </Route>
+        </Switch>
+      </div>
 
-        <Route path="/register">
-          <Register />
-        </Route>
-      </Switch>
     </Router>
   );
 }
