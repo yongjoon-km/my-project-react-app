@@ -12,21 +12,23 @@ const Login = () => {
 
 	async function loginHandler(e) {
 		e.preventDefault();
-		const res = await fetch('http://localhost:5000/user/login', {
-			method: 'POST',
+		const res = await fetch('http://localhost:5000/auth/login', {
+			method: 'post',
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
 			},
+			credentials: 'include',
 			body: JSON.stringify({
 				email: email,
 				password: password,
 			})
 		});
-
+		console.log(res.body);
 		if (res.status === 200) {
 			const data = await res.json();
 			console.log(data);
+			window.location.href='/';
 		} else {
 			// should alert user to try again
 			setAuthFails(true);
