@@ -1,59 +1,96 @@
-import React, { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeField, initializeForm, login } from '../../modules/auth';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 import { Form, Button, Alert } from 'react-bootstrap'
+import { check } from '../../modules/user';
 import './Login.css'
 import '../style.css'
+import styled from 'styled-components';
 
-const Login = () => {
+const ErrorMessage = styled.div`
+	color: red;
+	text-align: center;
+	font-size: 0.875rem;
+	margin-top: 1rem;
+`;
 
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [authFails, setAuthFails] = useState(false);
 
-	async function loginHandler(e) {
-		e.preventDefault();
-		const res = await fetch('http://localhost:5000/auth/login', {
-			method: 'post',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-			credentials: 'include',
-			body: JSON.stringify({
-				email: email,
-				password: password,
+const Login = ({ history }) => {
+	const [error, setError] = useState(null);
+
+	const dispatch = useDispatch();
+	const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
+		form: auth.login,
+		auth: auth.auth,
+		authError: auth.authError,
+		user: user.user,
+	}));
+
+	const onChange = e => {
+		const { value, name } = e.target;
+		dispatch(
+			changeField({
+				form: 'login',
+				key: name,
+				value
 			})
-		});
-		console.log(res.body);
-		if (res.status === 200) {
-			const data = await res.json();
-			console.log(data);
-			window.location.href='/';
-		} else {
-			// should alert user to try again
-			setAuthFails(true);
-		}
+		);
+	};
+
+	const onSubmit = e => {
+		e.preventDefault();
+		const { email, password } = form;
+		dispatch(login({email, password}))
 	}
+
+	// initialize form when component loaded first time.
+	useEffect(() => {
+		dispatch(initializeForm('login'));
+	}, [dispatch]);
+
+	useEffect(() => {
+		if (authError) {
+			console.log('auth error', authError);
+			setError('login failed');
+			return;
+		}
+		if (auth) {
+			console.log('login success');
+			dispatch(check());
+		}
+	}, [auth, authError, dispatch]);
+
+	useEffect(() => {
+		if (user) {
+			history.push('/');
+		}
+	}, [history, user]);
 
 	return (
 		<>
-			<Form onSubmit={loginHandler} method='post'>
+			<Form onSubmit={onSubmit} method='post'>
 				<Form.Group controlId="formBasicEmail">
 					<Form.Label>Email address</Form.Label>
 					<Form.Control
 						type="email"
+						name="email"
 						placeholder="Enter email"
-						onChange={(e) => setEmail(e.target.value)} />
+						onChange={onChange}
+						value={form.email} />
 				</Form.Group>
 
 				<Form.Group controlId="formBasicPassword">
 					<Form.Label>Password</Form.Label>
 					<Form.Control
 						type="password"
+						name="password"
 						placeholder="Password"
-						onChange={(e) => setPassword(e.target.value)} />
+						onChange={onChange}
+						value={form.password} />
 				</Form.Group>
 
+				{error && <ErrorMessage>{error}</ErrorMessage>}
 				<Button className="btn-submit" variant="primary" type="submit">
 					Login
 				</Button>
@@ -63,15 +100,8 @@ const Login = () => {
 					Register
 				</Button>
 			</Link>
-			{
-				(authFails) && (
-					<>
-						<Redirect to='/login' />
-					</>
-				)
-			}
 		</>
 	);
 }
 
-export default Login;
+export default withRouter(Login);

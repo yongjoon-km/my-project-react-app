@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import Login from './Components/Login';
 import Register from './Components/Register';
+import Home from './Components/Home';
 import Nav from 'react-bootstrap/Nav';
 
 const App = () => {
@@ -24,17 +25,9 @@ const App = () => {
 
       <div className='container'>
         <Switch>
-          <Route path="/" exact>
-            <div>This is my Home Page</div>
-          </Route>
-
-          <Route path="/login">
-            <Login />
-          </Route>
-
-          <Route path="/register">
-            <Register />
-          </Route>
+          <Route component={Home} path="/" exact />
+          <Route component={Login} path="/login" />
+          <Route component={Register} path="/register" />
         </Switch>
       </div>
 
