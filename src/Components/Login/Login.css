@@ -1,0 +1,12 @@
+
+
+.btn-register {
+	color: grey;
+	border: none;
+	background-color: white;
+}
+
+.btn-register:hover {
+	background-color: #f0f0f0;
+	color: grey;
+}

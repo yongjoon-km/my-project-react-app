@@ -1,56 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import AddJobComponent from './AddJobComponent'
-import JobListComponent from './JobListComponent/'
-import Header from './Header'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+
+import Login from './Components/Login';
+import Register from './Components/Register';
+import Home from './Components/Home';
+import Nav from 'react-bootstrap/Nav';
 
 const App = () => {
 
-  const [jobs, setJobs] = useState();
-
-  useEffect(() => {
-    load_data();
-  }, []);
-
-  async function load_data() {
-    const response = await fetch('http://localhost:5000/api/jobs');
-    const data = await response.json();
-    const newJobs = data.map((item) => item['job_name']);
-    setJobs(newJobs);
-  }
-
-  async function pressHandler(newJob) {  
-    const data = {
-      job_name : newJob
-    };
-    const res = await fetch(`http://localhost:5000/api/jobs`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-    
-    if (!res.ok) {
-      // TODO: add pop-up message
-      console.log(await res.json());
-    } else {
-      await load_data();
-    }
-  }
-
   return (
-    <>
-      <Header />
-      <AddJobComponent pressHandler={pressHandler}/>
-      <JobListComponent jobs={jobs}/>
-    </>
+    <Router>
+
+      <nav className="navbar" activeKey="/">
+        <div>
+          <Link className="navbar__item" to="/">Home</Link>
+        </div>
+        <div className="navbar__container">
+          <Link className="navbar__item" to="/login">Login</Link>
+          <Link className="navbar__item" to="/register">Register</Link>
+        </div>
+      </nav>
+
+      <div className='container'>
+        <Switch>
+          <Route component={Home} path="/" exact />
+          <Route component={Login} path="/login" />
+          <Route component={Register} path="/register" />
+        </Switch>
+      </div>
+
+    </Router>
   );
 }
-
-const divStyle = {
-  margin: 10,
-};
 
 export default App;
