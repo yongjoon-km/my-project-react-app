@@ -9,4 +9,15 @@ export const register = ({ username, email, password }) =>
 	client.post('/auth/register', { username, email, password });
 
 // login check
-export const check = () => client.get('/auth/check');
+// export const check = ({auth}) => client.post('auth/check', {auth});
+
+
+
+export const check = (auth) => {
+	console.log(auth);
+	const { accessToken } = auth;
+	return client.post('/auth/check', {},
+		{
+			headers: { Authorization: accessToken }
+		});
+}

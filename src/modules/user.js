@@ -11,9 +11,19 @@ const [CHECK, CHECK_SUCCESS, CHECK_FAILURE] = createRequestActionTypes('user/CHE
 export const tempSetUser = createAction(TEMP_SET_USER, user => user);
 export const check = createAction(CHECK);
 
+function checkFailureSaga() {
+	try {
+		localStorage.removeItem('user');
+		localStorage.removeItem('auth');
+	} catch (e) {
+		console.log('localStorage is not working', e);
+	}
+}
+
 const checkSaga = createRequestSaga(CHECK, authAPI.check);
 export function* userSaga() {
 	yield takeLatest(CHECK, checkSaga);
+	yield takeLatest(CHECK_FAILURE, checkFailureSaga);
 }
 
 const initialState = {

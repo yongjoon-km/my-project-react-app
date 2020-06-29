@@ -69,14 +69,19 @@ const Register = ({ history }) => {
 		}
 		if (auth) {
 			console.log('register success', auth);
-			dispatch(check());
+			history.push('/login');
 		}
 	}, [authError, auth, dispatch]);
 
 	useEffect(() => {
 		if (user) {
-			console.log('check API success', user);
 			history.push('/');
+			try {
+				localStorage.setItem('user', JSON.stringify(user));
+				localStorage.setItem('auth', JSON.stringify(auth));
+			} catch (e) {
+				console.log('localStorage is not working');
+			}
 		}
 	}, [user, history]);
 

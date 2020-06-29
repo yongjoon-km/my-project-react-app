@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
+import {useSelector} from 'react-redux';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
@@ -10,6 +11,8 @@ import Nav from 'react-bootstrap/Nav';
 
 const App = () => {
 
+  const { user } = useSelector(({ user }) => ({ user: user.user, }));
+
   return (
     <Router>
 
@@ -18,8 +21,18 @@ const App = () => {
           <Link className="navbar__item" to="/">Home</Link>
         </div>
         <div className="navbar__container">
-          <Link className="navbar__item" to="/login">Login</Link>
-          <Link className="navbar__item" to="/register">Register</Link>
+          {user ? (
+            <>
+            <p className="navbar__item">{user.user}</p>
+            <Link className="navbar__item" to="/logout">Logout</Link>
+            </>
+          ) : (
+            <>
+            <Link className="navbar__item" to="/login">Login</Link>
+            <Link className="navbar__item" to="/register">Register</Link>
+            </>
+          )}
+
         </div>
       </nav>
 
