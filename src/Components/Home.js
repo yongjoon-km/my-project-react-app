@@ -1,7 +1,12 @@
 import React from 'react';
+import PDFPage from './PDFPage'
 
 const Home = () => {
-	return <div> This is Home Page </div>
+	return (
+		<>
+			<PDFPage title={'my notes'} />
+		</>
+	)
 };
 
 export default Home;

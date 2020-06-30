@@ -21,3 +21,5 @@ export const check = (auth) => {
 			headers: { Authorization: accessToken }
 		});
 }
+
+export const logout = () => client.post('/auth/logout');
